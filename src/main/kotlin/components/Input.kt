@@ -1,4 +1,4 @@
-package components.textFiled
+package components
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
@@ -31,15 +31,12 @@ fun Input(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    isError: Boolean = false,
-    isSuccess: Boolean = false,
     readOnly: Boolean = false,
     textStyle: TextStyle = MaterialTheme.typography.body1,
     placeholder: String? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onTrailingIconClick: (() -> Unit)? = null
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     val mergedTextStyle =
         textStyle.merge(TextStyle(color = Color.Black))
@@ -76,7 +73,7 @@ fun Input(
                             border = BorderStroke(1.dp, Color.Black),
                             shape = RoundedCornerShape(12.dp)
                         )
-                        .padding(all = 12.dp)
+                        .padding(all = 8.dp)
                         .height(24.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {

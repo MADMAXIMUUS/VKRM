@@ -1,4 +1,4 @@
-package components.textFiled
+package components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
