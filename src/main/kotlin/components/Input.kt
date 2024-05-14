@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ fun Input(
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = MaterialTheme.typography.body1,
+    trailingIcon: (@Composable () -> Unit)? = null,
     placeholder: String? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -77,7 +79,6 @@ fun Input(
                         .height(24.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -92,6 +93,13 @@ fun Input(
                             )
                         }
                         innerTextField()
+                    }
+                    trailingIcon?.let {
+                        CompositionLocalProvider(
+                            LocalContentColor provides Color.DarkGray
+                        ) {
+                            it()
+                        }
                     }
                 }
             }

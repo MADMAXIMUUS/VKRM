@@ -12,14 +12,33 @@ class MainViewModel : ViewModel() {
     private val _state = MutableStateFlow(MainScreenState())
     val state: StateFlow<MainScreenState> = _state
 
-    fun onEnerInput(newValue: String) {
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { currentState ->
+                currentState.copy(
+                    types = listOf(
+                        "Электротранспорт",
+                        "Маневровый электровоз",
+                        "Альтернативная энергетика(домашняя)",
+                        "Геостационарная орбита",
+                        "Солнечно-стационарная орбита",
+                        "Импульсная характеристика разряда"
+                    ),
+                    selectedType = "Электротранспорт",
+                    selectedIndex = 0
+                )
+            }
+        }
+    }
+
+    fun onEnergyInput(newValue: String) {
         try {
             if (newValue.isNotEmpty()) newValue.toDouble()
             viewModelScope.launch(Dispatchers.IO) {
                 _state.update { currentState ->
                     currentState.copy(
-                        ener = newValue,
-                        enerError = null
+                        energy = newValue,
+                        energyError = null
                     )
                 }
             }
@@ -27,8 +46,8 @@ class MainViewModel : ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
                 _state.update { currentState ->
                     currentState.copy(
-                        ener = newValue,
-                        enerError = "Необходимо ввести число"
+                        energy = newValue,
+                        energyError = "Необходимо ввести число"
                     )
                 }
             }
@@ -123,6 +142,17 @@ class MainViewModel : ViewModel() {
                         volumeError = "Необходимо ввести число"
                     )
                 }
+            }
+        }
+    }
+
+    fun onSelectedChange(newValue: String, index: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { currentState ->
+                currentState.copy(
+                    selectedType = newValue,
+                    selectedIndex = index
+                )
             }
         }
     }

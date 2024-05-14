@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import components.Input
+import components.Select
 
 @Composable
 fun MainRoute(
@@ -23,11 +24,12 @@ fun MainRoute(
         Surface(modifier = Modifier.fillMaxSize()) {
             MainScreen(
                 state = state,
-                onEnerInput = mainViewModel::onEnerInput,
+                onEnergyInput = mainViewModel::onEnergyInput,
                 onPowerInput = mainViewModel::onPowerInput,
                 onCostInput = mainViewModel::onCostInput,
                 onMassInput = mainViewModel::onMassInput,
-                onVolumeInput = mainViewModel::onVolumeInput
+                onVolumeInput = mainViewModel::onVolumeInput,
+                onSelectedChange = mainViewModel::onSelectedChange
             )
         }
     }
@@ -37,17 +39,19 @@ fun MainRoute(
 @Composable
 fun MainScreen(
     state: MainScreenState,
-    onEnerInput: (String) -> Unit,
+    onEnergyInput: (String) -> Unit,
     onPowerInput: (String) -> Unit,
     onCostInput: (String) -> Unit,
     onMassInput: (String) -> Unit,
-    onVolumeInput: (String) -> Unit
+    onVolumeInput: (String) -> Unit,
+    onSelectedChange: (String, Int) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
@@ -59,17 +63,17 @@ fun MainScreen(
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = "Энергоемкость",
-                    style = MaterialTheme.typography.overline
+                    text = "Энергоемкость, Втч",
+                    style = MaterialTheme.typography.caption
                 )
                 Input(
-                    value = state.ener,
-                    onValueChange = onEnerInput,
+                    value = state.energy,
+                    onValueChange = onEnergyInput,
                     placeholder = "00.00000"
                 )
-                if (state.enerError != null)
+                if (state.energyError != null)
                     Text(
-                        text = state.enerError,
+                        text = state.energyError,
                         style = MaterialTheme.typography.caption,
                         color = Color.Red
                     )
@@ -79,8 +83,8 @@ fun MainScreen(
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = "Мощность",
-                    style = MaterialTheme.typography.overline
+                    text = "Мощность, Вт",
+                    style = MaterialTheme.typography.caption
                 )
                 Input(
                     value = state.power,
@@ -99,8 +103,8 @@ fun MainScreen(
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = "Цена",
-                    style = MaterialTheme.typography.overline
+                    text = "Цена, Руб",
+                    style = MaterialTheme.typography.caption
                 )
                 Input(
                     value = state.cost,
@@ -119,8 +123,8 @@ fun MainScreen(
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = "Масса",
-                    style = MaterialTheme.typography.overline
+                    text = "Масса, Кг",
+                    style = MaterialTheme.typography.caption
                 )
                 Input(
                     value = state.mass,
@@ -139,8 +143,8 @@ fun MainScreen(
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = "Объем",
-                    style = MaterialTheme.typography.overline
+                    text = "Объем, дм3",
+                    style = MaterialTheme.typography.caption
                 )
                 Input(
                     value = state.volume,
@@ -154,6 +158,26 @@ fun MainScreen(
                         color = Color.Red
                     )
             }
+        }
+        Column(
+            modifier = Modifier.width(412.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(
+                text = "Выберите область применения",
+                style = MaterialTheme.typography.caption
+            )
+            Select(
+                selected = state.selectedType,
+                values = state.types,
+                onSelectedChange = onSelectedChange
+            )
+            if (state.volumeError != null)
+                Text(
+                    text = state.volumeError,
+                    style = MaterialTheme.typography.caption,
+                    color = Color.Red
+                )
         }
     }
 }

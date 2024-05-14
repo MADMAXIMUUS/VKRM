@@ -2,9 +2,10 @@ package mainScreen
 
 data class MainScreenState(
     val selectedType: String = "",
+    val selectedIndex: Int = 0,
     val types: List<String> = emptyList(),
-    val ener: String = "",
-    val enerError: String? = null,
+    val energy: String = "",
+    val energyError: String? = null,
     val power: String = "",
     val powerError: String? = null,
     val cost: String = "",

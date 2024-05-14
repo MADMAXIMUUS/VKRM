@@ -13,11 +13,12 @@ import mainScreen.MainViewModel
 fun MainScreenPreview() {
     MainScreen(
         state = MainScreenState(),
-        onEnerInput = {},
+        onEnergyInput = {},
         onPowerInput = {},
         onCostInput = {},
         onMassInput = {},
-        onVolumeInput = {}
+        onVolumeInput = {},
+        onSelectedChange = { _, _-> }
     )
 }
 
