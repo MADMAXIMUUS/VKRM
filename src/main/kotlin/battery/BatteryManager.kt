@@ -1,5 +1,7 @@
 package battery
 
+import util.intersect
+
 class BatteryManager {
 
     private val _batteries: MutableList<Battery> = mutableListOf()
@@ -13,73 +15,73 @@ class BatteryManager {
             listOf(
                 Battery(
                     name = "Свинцово-кислотный",
-                    cRatio = 0.2,
-                    cEnergyM = 40.0,
-                    cEnergyV = 70.0,
-                    cEnergyCost = 150.0,
-                    cPowerM = 200.0,
-                    cPowerV = 300.0,
-                    cPowerCost = 75.0
+                    cRatio = 0.1..0.3,
+                    cEnergyM = 30.0..50.0,
+                    cEnergyV = 50.0..90.0,
+                    cEnergyCost = 100.0..200.0,
+                    cPowerM = 150.0..300.0,
+                    cPowerV = 200.0..400.0,
+                    cPowerCost = 50.0..100.0
                 ),
                 Battery(
                     name = "Никель-металлгидридный",
-                    cRatio = 0.4,
-                    cEnergyM = 80.0,
-                    cEnergyV = 220.0,
-                    cEnergyCost = 250.0,
-                    cPowerM = 800.0,
-                    cPowerV = 1000.0,
-                    cPowerCost = 150.0
+                    cRatio = 0.2..0.5,
+                    cEnergyM = 60.0..120.0,
+                    cEnergyV = 140.0..300.0,
+                    cEnergyCost = 200.0..300.0,
+                    cPowerM = 250.0..1000.0,
+                    cPowerV = 400.0..1500.0,
+                    cPowerCost = 100.0..200.0
                 ),
                 Battery(
                     name = "Никель-водородный",
-                    cRatio = 0.4,
-                    cEnergyM = 70.0,
-                    cEnergyV = 180.0,
-                    cEnergyCost = 400.0,
-                    cPowerM = 300.0,
-                    cPowerV = 450.0,
-                    cPowerCost = 230.0
+                    cRatio = 0.2..0.5,
+                    cEnergyM = 60.0..80.0,
+                    cEnergyV = 140.0..250.0,
+                    cEnergyCost = 300.0..500.0,
+                    cPowerM = 200.0..400.0,
+                    cPowerV = 300.0..600.0,
+                    cPowerCost = 150.0..300.0
                 ),
                 Battery(
                     name = "Литий-ионный",
-                    cRatio = 0.7,
-                    cEnergyM = 200.0,
-                    cEnergyV = 450.0,
-                    cEnergyCost = 200.0,
-                    cPowerM = 1000.0,
-                    cPowerV = 2000.0,
-                    cPowerCost = 100.0
-                    ),
+                    cRatio = 0.5..2.0,
+                    cEnergyM = 150.0..250.0,
+                    cEnergyV = 250.0..620.0,
+                    cEnergyCost = 150.0..250.0,
+                    cPowerM = 300.0..1500.0,
+                    cPowerV = 600.0..3000.0,
+                    cPowerCost = 75.0..125.0
+                ),
                 Battery(
                     name = "Литий-железо-фосфатный",
-                    cRatio = 1.4,
-                    cEnergyM = 100.0,
-                    cEnergyV = 250.0,
-                    cEnergyCost = 180.0,
-                    cPowerM = 700.0,
-                    cPowerV = 1500.0,
-                    cPowerCost = 85.0
+                    cRatio = 0.5..2.0,
+                    cEnergyM = 90.0..120.0,
+                    cEnergyV = 200.0..330.0,
+                    cEnergyCost = 150.0..200.0,
+                    cPowerM = 200.0..1000.0,
+                    cPowerV = 400.0..2000.0,
+                    cPowerCost = 75.0..100.0
                 ),
                 Battery(
                     name = "Литий-титанатный",
-                    cRatio = 5.0,
-                    cEnergyM = 80.0,
-                    cEnergyV = 200.0,
-                    cEnergyCost = 250.0,
-                    cPowerM = 4000.0,
-                    cPowerV = 6000.0,
-                    cPowerCost = 125.0
+                    cRatio = 1.0..10.0,
+                    cEnergyM = 70.0..90.0,
+                    cEnergyV = 150.0..240.0,
+                    cEnergyCost = 200.0..300.0,
+                    cPowerM = 2000.0..6000.0,
+                    cPowerV = 3000.0..10000.0,
+                    cPowerCost = 100.0..150.0
                 ),
                 Battery(
                     name = "Суперконденсатор",
-                    cRatio = 50.0,
-                    cEnergyM = 7.0,
-                    cEnergyV = 7.0,
-                    cEnergyCost = 800.0,
-                    cPowerM = 7000.0,
-                    cPowerV = 15000.0,
-                    cPowerCost = 300.0
+                    cRatio = 10.0..100.0,
+                    cEnergyM = 5.0..10.0,
+                    cEnergyV = 5.0..10.0,
+                    cEnergyCost = 500.0..1000.0,
+                    cPowerM = 5000.0..10000.0,
+                    cPowerV = 10000.0..20000.0,
+                    cPowerCost = 200.0..400.0
                 )
             )
         )
@@ -87,65 +89,140 @@ class BatteryManager {
             listOf(
                 Battery(
                     name = "Электромобили",
-                    cRatio = 3.0,
-                    cEnergyM = 200.0,
-                    cEnergyV = 400.0,
-                    cEnergyCost = 200.0,
-                    cPowerM = 1000.0,
-                    cPowerV = 2000.0,
-                    cPowerCost = 100.0
+                    cRatio = 1.0..5.0,
+                    cEnergyM = 150.0..250.0,
+                    cEnergyV = 250.0..620.0,
+                    cEnergyCost = 150.0..250.0,
+                    cPowerM = 300.0..1500.0,
+                    cPowerV = 600.0..3000.0,
+                    cPowerCost = 75.0..125.0
                 ),
                 Battery(
                     name = "Маневровый электровоз",
-                    cRatio = 4.0,
-                    cEnergyM = 150.0,
-                    cEnergyV = 250.0,
-                    cEnergyCost = 0.2,
-                    cPowerM = 300.0,
-                    cPowerV = 600.0,
-                    cPowerCost = 0.1
+                    cRatio = 3.0..5.0,
+                    cEnergyM = 150.0..1000.0,
+                    cEnergyV = 250.0..1000.0,
+                    cEnergyCost = 0.0..0.2,
+                    cPowerM = 300.0..1000.0,
+                    cPowerV = 600.0..1000.0,
+                    cPowerCost = 0.0..0.1
                 ),
                 Battery(
                     name = "Альтернативная энергетика",
-                    cRatio = 0.5,
-                    cEnergyM = 100.0,
-                    cEnergyV = 200.0,
-                    cEnergyCost = 0.2,
-                    cPowerM = 300.0,
-                    cPowerV = 600.0,
-                    cPowerCost = 0.3
+                    cRatio = 0.1..1.0,
+                    cEnergyM = 100.0..1000.0,
+                    cEnergyV = 200.0..1000.0,
+                    cEnergyCost = 0.0..0.2,
+                    cPowerM = 300.0..1000.0,
+                    cPowerV = 600.0..1000.0,
+                    cPowerCost = 0.0..0.3
                 ),
                 Battery(
                     name = "Геостационарная орбита",
-                    cRatio = 0.3,
-                    cEnergyM = 100.0,
-                    cEnergyV = 200.0,
-                    cEnergyCost = 500.0,
-                    cPowerM = 200.0,
-                    cPowerV = 400.0,
-                    cPowerCost = 1000.0
+                    cRatio = 0.1..0.5,
+                    cEnergyM = 100.0..1000.0,
+                    cEnergyV = 200.0..1000.0,
+                    cEnergyCost = 0.0..500.0,
+                    cPowerM = 200.0..1000.0,
+                    cPowerV = 400.0..1000.0,
+                    cPowerCost = 0.0..1000.0
                 ),
                 Battery(
                     name = "солнечно стационарная орбита",
-                    cRatio = 0.3,
-                    cEnergyM = 150.0,
-                    cEnergyV = 400.0,
-                    cEnergyCost = 30.0,
-                    cPowerM = 250.0,
-                    cPowerV = 600.0,
-                    cPowerCost = 30.0
+                    cRatio = 0.1..0.5,
+                    cEnergyM = 100.0..250.0,
+                    cEnergyV = 200.0..600.0,
+                    cEnergyCost = 10.0..50.0,
+                    cPowerM = 100.0..500.0,
+                    cPowerV = 200.0..1000.0,
+                    cPowerCost = 10.0..50.0
                 ),
                 Battery(
                     name = "Импульсный характер разряда",
-                    cRatio = 1.0,
-                    cEnergyM = 180.0,
-                    cEnergyV = 500.0,
-                    cEnergyCost = 100.0,
-                    cPowerM = 6000.0,
-                    cPowerV = 15000.0,
-                    cPowerCost = 100.0
+                    cRatio = 1.0..5.0,
+                    cEnergyM = 30.0..250.0,
+                    cEnergyV = 50.0..700.0,
+                    cEnergyCost = 0.0..100.0,
+                    cPowerM = 100.0..10000.0,
+                    cPowerV = 200.0..20000.0,
+                    cPowerCost = 0.0..100.0
                 )
             )
         )
+    }
+
+    fun getBestBattery(
+        energy: Double,
+        power: Double,
+        cost: Double,
+        mass: Double,
+        volume: Double,
+        application: Int
+    ): Battery {
+        val applicationBattery: Battery = applies[application]
+
+        val cEnergyM = energy / mass
+        val cEnergyV = energy / volume
+        val cEnergyCost = energy / cost
+
+        val cPowerM = power / mass
+        val cPowerV = power / volume
+        val cPowerCost = power / cost
+
+        val bestBattery =
+            findBestBattery(applicationBattery, cEnergyM, cEnergyV, cEnergyCost, cPowerM, cPowerV, cPowerCost)
+
+        return bestBattery ?: batteries[0]
+    }
+
+    private fun findBestBattery(
+        application: Battery,
+        cEnergyM: Double,
+        cEnergyV: Double,
+        cEnergyCost: Double,
+        cPowerM: Double,
+        cPowerV: Double,
+        cPowerCost: Double
+    ): Battery? {
+        if (batteries.isEmpty()) return null
+
+        var bestBattery = batteries[0]
+        var bestScore =
+            calculateScore(bestBattery, application, cEnergyM, cEnergyV, cEnergyCost, cPowerM, cPowerV, cPowerCost)
+
+        for (battery in batteries) {
+            val score =
+                calculateScore(battery, application, cEnergyM, cEnergyV, cEnergyCost, cPowerM, cPowerV, cPowerCost)
+            if (score > bestScore) {
+                bestScore = score
+                bestBattery = battery
+            }
+        }
+
+        return bestBattery
+    }
+
+    private fun calculateScore(
+        battery: Battery,
+        application: Battery,
+        cEnergyM: Double,
+        cEnergyV: Double,
+        cEnergyCost: Double,
+        cPowerM: Double,
+        cPowerV: Double,
+        cPowerCost: Double
+    ): Double {
+        val energyMScore =
+            if (battery.cEnergyM.intersect(application.cEnergyM)?.contains(cEnergyM) == true) 1.0 else 0.0
+        val energyVScore =
+            if (battery.cEnergyV.intersect(application.cEnergyV)?.contains(cEnergyV) == true) 1.0 else 0.0
+        val energyCostScore =
+            if (battery.cEnergyCost.intersect(application.cEnergyCost)?.contains(cEnergyCost) == true) 1.0 else 0.0
+        val powerMScore = if (battery.cPowerM.intersect(application.cPowerM)?.contains(cPowerM) == true) 1.0 else 0.0
+        val powerVScore = if (battery.cPowerV.intersect(application.cPowerV)?.contains(cPowerV) == true) 1.0 else 0.0
+        val powerCostScore =
+            if (battery.cPowerCost.intersect(application.cPowerCost)?.contains(cPowerCost) == true) 1.0 else 0.0
+
+        return energyMScore + energyVScore + energyCostScore + powerMScore + powerVScore + powerCostScore
     }
 }

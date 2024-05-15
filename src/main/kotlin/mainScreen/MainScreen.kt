@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import components.Button
 import components.Input
 import components.Select
 
@@ -29,7 +30,8 @@ fun MainRoute(
                 onCostInput = mainViewModel::onCostInput,
                 onMassInput = mainViewModel::onMassInput,
                 onVolumeInput = mainViewModel::onVolumeInput,
-                onSelectedChange = mainViewModel::onSelectedChange
+                onSelectedChange = mainViewModel::onSelectedChange,
+                onButtonClick = mainViewModel::check
             )
         }
     }
@@ -44,7 +46,8 @@ fun MainScreen(
     onCostInput: (String) -> Unit,
     onMassInput: (String) -> Unit,
     onVolumeInput: (String) -> Unit,
-    onSelectedChange: (String, Int) -> Unit
+    onSelectedChange: (String, Int) -> Unit,
+    onButtonClick: ()->Unit
 ) {
     Column(
         modifier = Modifier
@@ -172,12 +175,14 @@ fun MainScreen(
                 values = state.types,
                 onSelectedChange = onSelectedChange
             )
-            if (state.volumeError != null)
-                Text(
-                    text = state.volumeError,
-                    style = MaterialTheme.typography.caption,
-                    color = Color.Red
-                )
         }
+        Button(
+            title = "Расчитать",
+            onClick = onButtonClick
+        )
+        Text(
+            text = state.result,
+            style = MaterialTheme.typography.h1
+        )
     }
 }

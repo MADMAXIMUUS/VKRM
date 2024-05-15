@@ -2,6 +2,7 @@ package mainScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import battery.BatteryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -152,6 +153,25 @@ class MainViewModel : ViewModel() {
                 currentState.copy(
                     selectedType = newValue,
                     selectedIndex = index
+                )
+            }
+        }
+    }
+
+    fun check() {
+        val batteryManager = BatteryManager()
+        viewModelScope.launch(Dispatchers.IO) {
+            val battery = batteryManager.getBestBattery(
+                state.value.energy.toDouble(),
+                state.value.power.toDouble(),
+                state.value.cost.toDouble(),
+                state.value.mass.toDouble(),
+                state.value.volume.toDouble(),
+                state.value.selectedIndex
+            )
+            _state.update { currentState ->
+                currentState.copy(
+                    result = battery.name
                 )
             }
         }
