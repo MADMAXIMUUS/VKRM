@@ -30,6 +30,8 @@ fun MainRoute(
                 onCostInput = mainViewModel::onCostInput,
                 onMassInput = mainViewModel::onMassInput,
                 onVolumeInput = mainViewModel::onVolumeInput,
+                onStrengthInput = mainViewModel::onStrengthInput,
+                onVoltageInput = mainViewModel::onVoltageInput,
                 onSelectedChange = mainViewModel::onSelectedChange,
                 onButtonClick = mainViewModel::check
             )
@@ -46,8 +48,10 @@ fun MainScreen(
     onCostInput: (String) -> Unit,
     onMassInput: (String) -> Unit,
     onVolumeInput: (String) -> Unit,
+    onStrengthInput: (String) -> Unit,
+    onVoltageInput: (String) -> Unit,
     onSelectedChange: (String, Int) -> Unit,
-    onButtonClick: ()->Unit
+    onButtonClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -157,6 +161,46 @@ fun MainScreen(
                 if (state.volumeError != null)
                     Text(
                         text = state.volumeError,
+                        style = MaterialTheme.typography.caption,
+                        color = Color.Red
+                    )
+            }
+            Column(
+                modifier = Modifier.width(200.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                Text(
+                    text = "Сила тока, А",
+                    style = MaterialTheme.typography.caption
+                )
+                Input(
+                    value = state.strength,
+                    onValueChange = onStrengthInput,
+                    placeholder = "00.00000"
+                )
+                if (state.strengthError != null)
+                    Text(
+                        text = state.strengthError,
+                        style = MaterialTheme.typography.caption,
+                        color = Color.Red
+                    )
+            }
+            Column(
+                modifier = Modifier.width(200.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                Text(
+                    text = "Напряжение, В",
+                    style = MaterialTheme.typography.caption
+                )
+                Input(
+                    value = state.voltage,
+                    onValueChange = onVoltageInput,
+                    placeholder = "00.00000"
+                )
+                if (state.voltageError != null)
+                    Text(
+                        text = state.voltageError,
                         style = MaterialTheme.typography.caption,
                         color = Color.Red
                     )

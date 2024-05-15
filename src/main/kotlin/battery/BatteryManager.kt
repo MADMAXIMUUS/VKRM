@@ -157,9 +157,13 @@ class BatteryManager {
         cost: Double,
         mass: Double,
         volume: Double,
+        strength: Double,
+        voltage: Double,
         application: Int
     ): Battery {
         val applicationBattery: Battery = applies[application]
+
+        val cRatio = (strength * voltage) / energy
 
         val cEnergyM = energy / mass
         val cEnergyV = energy / volume
@@ -170,13 +174,14 @@ class BatteryManager {
         val cPowerCost = power / cost
 
         val bestBattery =
-            findBestBattery(applicationBattery, cEnergyM, cEnergyV, cEnergyCost, cPowerM, cPowerV, cPowerCost)
+            findBestBattery(applicationBattery, cRatio, cEnergyM, cEnergyV, cEnergyCost, cPowerM, cPowerV, cPowerCost)
 
         return bestBattery ?: batteries[0]
     }
 
     private fun findBestBattery(
         application: Battery,
+        cRatio: Double,
         cEnergyM: Double,
         cEnergyV: Double,
         cEnergyCost: Double,
@@ -188,11 +193,31 @@ class BatteryManager {
 
         var bestBattery = batteries[0]
         var bestScore =
-            calculateScore(bestBattery, application, cEnergyM, cEnergyV, cEnergyCost, cPowerM, cPowerV, cPowerCost)
+            calculateScore(
+                bestBattery,
+                application,
+                cRatio,
+                cEnergyM,
+                cEnergyV,
+                cEnergyCost,
+                cPowerM,
+                cPowerV,
+                cPowerCost
+            )
 
         for (battery in batteries) {
             val score =
-                calculateScore(battery, application, cEnergyM, cEnergyV, cEnergyCost, cPowerM, cPowerV, cPowerCost)
+                calculateScore(
+                    battery,
+                    application,
+                    cRatio,
+                    cEnergyM,
+                    cEnergyV,
+                    cEnergyCost,
+                    cPowerM,
+                    cPowerV,
+                    cPowerCost
+                )
             if (score > bestScore) {
                 bestScore = score
                 bestBattery = battery
@@ -205,6 +230,7 @@ class BatteryManager {
     private fun calculateScore(
         battery: Battery,
         application: Battery,
+        cRatio: Double,
         cEnergyM: Double,
         cEnergyV: Double,
         cEnergyCost: Double,
@@ -212,6 +238,8 @@ class BatteryManager {
         cPowerV: Double,
         cPowerCost: Double
     ): Double {
+        val cRatioScore =
+            if (battery.cRatio.intersect(application.cRatio)?.contains(cRatio) == true) 1.0 else 0.0
         val energyMScore =
             if (battery.cEnergyM.intersect(application.cEnergyM)?.contains(cEnergyM) == true) 1.0 else 0.0
         val energyVScore =
@@ -223,6 +251,6 @@ class BatteryManager {
         val powerCostScore =
             if (battery.cPowerCost.intersect(application.cPowerCost)?.contains(cPowerCost) == true) 1.0 else 0.0
 
-        return energyMScore + energyVScore + energyCostScore + powerMScore + powerVScore + powerCostScore
+        return cRatioScore + energyMScore + energyVScore + energyCostScore + powerMScore + powerVScore + powerCostScore
     }
 }

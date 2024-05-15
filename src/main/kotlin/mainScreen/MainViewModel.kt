@@ -147,6 +147,52 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun onStrengthInput(newValue: String) {
+        try {
+            if (newValue.isNotEmpty()) newValue.toDouble()
+            viewModelScope.launch(Dispatchers.IO) {
+                _state.update { currentState ->
+                    currentState.copy(
+                        strength = newValue,
+                        strengthError = null
+                    )
+                }
+            }
+        } catch (e: NumberFormatException) {
+            viewModelScope.launch(Dispatchers.IO) {
+                _state.update { currentState ->
+                    currentState.copy(
+                        strength = newValue,
+                        strengthError = "Необходимо ввести число"
+                    )
+                }
+            }
+        }
+    }
+
+    fun onVoltageInput(newValue: String) {
+        try {
+            if (newValue.isNotEmpty()) newValue.toDouble()
+            viewModelScope.launch(Dispatchers.IO) {
+                _state.update { currentState ->
+                    currentState.copy(
+                        voltage = newValue,
+                        voltageError = null
+                    )
+                }
+            }
+        } catch (e: NumberFormatException) {
+            viewModelScope.launch(Dispatchers.IO) {
+                _state.update { currentState ->
+                    currentState.copy(
+                        voltage = newValue,
+                        voltageError = "Необходимо ввести число"
+                    )
+                }
+            }
+        }
+    }
+
     fun onSelectedChange(newValue: String, index: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             _state.update { currentState ->
@@ -161,18 +207,36 @@ class MainViewModel : ViewModel() {
     fun check() {
         val batteryManager = BatteryManager()
         viewModelScope.launch(Dispatchers.IO) {
-            val battery = batteryManager.getBestBattery(
-                state.value.energy.toDouble(),
-                state.value.power.toDouble(),
-                state.value.cost.toDouble(),
-                state.value.mass.toDouble(),
-                state.value.volume.toDouble(),
-                state.value.selectedIndex
-            )
-            _state.update { currentState ->
-                currentState.copy(
-                    result = battery.name
+            val isInputsValid = state.value.energyError == null &&
+                    state.value.powerError == null &&
+                    state.value.costError == null &&
+                    state.value.massError == null &&
+                    state.value.volumeError == null &&
+                    state.value.strengthError == null &&
+                    state.value.voltageError == null
+
+            if (isInputsValid) {
+                val battery = batteryManager.getBestBattery(
+                    state.value.energy.toDouble(),
+                    state.value.power.toDouble(),
+                    state.value.cost.toDouble(),
+                    state.value.mass.toDouble(),
+                    state.value.volume.toDouble(),
+                    state.value.strength.toDouble(),
+                    state.value.voltage.toDouble(),
+                    state.value.selectedIndex
                 )
+                _state.update { currentState ->
+                    currentState.copy(
+                        result = battery.name
+                    )
+                }
+            } else {
+                _state.update { currentState ->
+                    currentState.copy(
+                        result = "Введите корректные данные"
+                    )
+                }
             }
         }
     }

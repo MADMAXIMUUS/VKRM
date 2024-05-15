@@ -18,8 +18,10 @@ fun MainScreenPreview() {
         onCostInput = {},
         onMassInput = {},
         onVolumeInput = {},
-        onSelectedChange = { _, _-> },
-        onButtonClick = {}
+        onSelectedChange = { _, _ -> },
+        onButtonClick = {},
+        onStrengthInput = {},
+        onVoltageInput = {}
     )
 }
 

@@ -14,5 +14,9 @@ data class MainScreenState(
     val massError: String? = null,
     val volume: String = "",
     val volumeError: String? = null,
+    val strength: String = "",
+    val strengthError: String? = null,
+    val voltage: String = "",
+    val voltageError: String? = null,
     val result: String = ""
 )
