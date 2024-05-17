@@ -226,7 +226,7 @@ fun MainScreen(
         )
         Text(
             text = state.result,
-            style = MaterialTheme.typography.h1
+            style = MaterialTheme.typography.body1
         )
     }
 }

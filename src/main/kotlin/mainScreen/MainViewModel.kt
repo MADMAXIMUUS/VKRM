@@ -226,9 +226,18 @@ class MainViewModel : ViewModel() {
                     state.value.voltage.toDouble(),
                     state.value.selectedIndex
                 )
+                val result = "Подходящий аккумулятор:\n" +
+                        "Название: ${battery.name}\n" +
+                        "C-ratio: ${battery.cRatio.start} - ${battery.cRatio.endInclusive}\n" +
+                        "Удельная энергоемкость, M: ${battery.cEnergyM.start} - ${battery.cEnergyM.endInclusive} Втч/кг\n" +
+                        "Удельная энергоемкость, V: ${battery.cEnergyV.start} - ${battery.cEnergyV.endInclusive} Втч/дм3\n" +
+                        "Удельная стоимость, E: ${battery.cEnergyCost.start} - ${battery.cEnergyCost.endInclusive} Втч/руб" +
+                        "Удельная мощность, M: ${battery.cPowerM.start} - ${battery.cPowerM.endInclusive} Вт/кг\n" +
+                        "Уельная мощность, V: ${battery.cPowerV.start} - ${battery.cPowerV.endInclusive} Вт/дм3\n" +
+                        "Удельная стоимость, P: ${battery.cPowerCost.start} - ${battery.cPowerCost.endInclusive} Вт/руб\n"
                 _state.update { currentState ->
                     currentState.copy(
-                        result = battery.name
+                        result = result
                     )
                 }
             } else {
